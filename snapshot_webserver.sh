@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # micro chmod +x ./
+# scp root@ip:/root/setup.sh .
 set -euo pipefail
 
 OUT_SCRIPT="${1:-setup.sh}"
