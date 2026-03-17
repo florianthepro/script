@@ -1,24 +1,10 @@
 #!/usr/bin/env bash
+# micro chmod +x ./
 set -euo pipefail
-
-# ============================================
-# snapshot_webserver.sh
-# Erzeugt ein setup.sh, das Apache + Webdaten
-# auf einer neuen Maschine wiederherstellt.
-#
-# Aufruf:
-#   sudo ./snapshot_webserver.sh [optional: /pfad/zu/setup.sh]
-#
-# ============================================
 
 OUT_SCRIPT="${1:-setup.sh}"
 
-# -----------------------------
-# Hilfsfunktionen
-# -----------------------------
-
 shell_quote() {
-  # Shell-sichere Single-Quote-Notation
   local s="$1"
   printf "'%s'" "${s//\'/\'\"\'\"\'}"
 }
@@ -26,7 +12,6 @@ shell_quote() {
 detect_packages() {
   echo "[INFO] Ermittele installierte Webserver-Pakete..." >&2
 
-  # Apache2 immer mitnehmen
   local pkgs=("apache2")
 
   if ! command -v dpkg-query >/dev/null 2>&1; then
@@ -56,7 +41,6 @@ detect_packages() {
     done
   done <<< "$output"
 
-  # Duplikate raus, Reihenfolge egal
   local -A seen=()
   local unique=()
   for p in "${pkgs[@]}"; do
@@ -78,14 +62,12 @@ detect_docroots() {
     while IFS= read -r conf; do
       [[ -f "$conf" ]] || continue
       while IFS= read -r line; do
-        # führende Leerzeichen entfernen
         line="${line#"${line%%[![:space:]]*}"}"
         [[ -z "$line" ]] && continue
         [[ "$line" == \#* ]] && continue
 
         if [[ "$line" =~ ^[Dd]ocument[Rr]oot[[:space:]]+(.+)$ ]]; then
           local path="${BASH_REMATCH[1]}"
-          # Anführungszeichen entfernen
           path="${path%\"}"
           path="${path#\"}"
           path="${path%\'}"
@@ -158,7 +140,6 @@ snapshot_dirs_and_files() {
 
   echo 'echo "[INFO] Lege Verzeichnisse an und setze Rechte..."' >> "$out"
 
-  # Verzeichnisse
   local root dir mode user group qdir
   for root in "${docroots[@]}"; do
     if [[ ! -d "$root" ]]; then
@@ -166,7 +147,6 @@ snapshot_dirs_and_files() {
       continue
     fi
 
-    # -print0, um Leerzeichen in Pfaden sicher zu handhaben
     while IFS= read -r -d '' dir; do
       if ! stat_out=$(stat -c '%a %U %G' "$dir" 2>/dev/null); then
         continue
@@ -187,7 +167,6 @@ snapshot_dirs_and_files() {
   echo >> "$out"
   echo 'echo "[INFO] Schreibe Dateien..."' >> "$out"
 
-  # Dateien
   local file stat_out fmode fuser fgroup qfile b64
   for root in "${docroots[@]}"; do
     if [[ ! -d "$root" ]]; then
@@ -205,7 +184,6 @@ snapshot_dirs_and_files() {
 
       qfile=$(shell_quote "$file")
 
-      # Inhalt base64-kodieren
       if ! b64=$(base64 -w0 "$file" 2>/dev/null); then
         echo "[WARN] Konnte Datei $file nicht lesen, überspringe..." >&2
         continue
@@ -213,7 +191,6 @@ snapshot_dirs_and_files() {
 
       echo "# Datei: $file" >> "$out"
       echo "base64 -d > $qfile << 'EOF_B64'" >> "$out"
-      # Base64 in Zeilen aufsplitten
       echo "$b64" | fold -w76 >> "$out"
       echo "EOF_B64" >> "$out"
       echo "chmod $fmode $qfile || true" >> "$out"
@@ -225,9 +202,6 @@ snapshot_dirs_and_files() {
   echo 'echo "[INFO] Setup abgeschlossen."' >> "$out"
 }
 
-# -----------------------------
-# Main
-# -----------------------------
 
 main() {
   if [[ -e "$OUT_SCRIPT" ]]; then
