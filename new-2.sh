@@ -157,7 +157,7 @@ cat > "${AUTOSTART_DIR}/prtg-kiosk.desktop" <<EOF
 [Desktop Entry]
 Type=Application
 Name=PRTG Monitoring Kiosk
-Exec=${CHROMIUM_BIN} --kiosk --incognito --noerrdialogs --disable-translate --disable-infobars --check-for-update-interval=31536000 --password-store=basic --no-first-run --no-default-browser-check --ignore-certificate-errors --allow-insecure-localhost "${DASHBOARD_START_URL}"
+Exec=${CHROMIUM_BIN} --kiosk --incognito --noerrdialogs --disable-translate --disable-infobars --check-for-update-interval=31536000 --password-store=basic --no-first-run --no-default-browser-check --ignore-certificate-errors --allow-insecure-localhost --disable-features=WebContentsForceDark --force-color-profile=srgb "${DASHBOARD_START_URL}"
 X-GNOME-Autostart-enabled=true
 EOF
 
