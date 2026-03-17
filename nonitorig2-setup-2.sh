@@ -5,39 +5,18 @@ set -euo pipefail
 # Konfiguration
 # =========================
 
-# Kiosk-Benutzer (wird angelegt, falls nicht vorhanden)
 KIOSK_USER="dash"
-
-# Haupt-Dashboard (PRTG)
 PRTG_DASHBOARD_URL="https://monitoring.tcsoc.net/public/mapshow.htm?ids=15901:4C3A7306-367D-40E8-8CD6-A9EC9936D655,16089:577EA9F7-7D38-45C5-A52B-159D3800C66C,14848:6AD7B66E-A56E-4694-8296-D0A24FAC3AED"
-
-# Zweites Dashboard (anderes Monitoring-System, optional)
-# Beispiel:
-# MY_DASHBOARD_URL="https://anderes-monitoring.example.net/dashboard?id=123"
-MY_DASHBOARD_URL=""
-
-# Anzeigezeiten in Sekunden pro Dashboard
-PRTG_DASHBOARD_URL_S=60   # Dauer Dashboard 1
-MY_DASHBOARD_URL_S=60     # Dauer Dashboard 2 (nur relevant, wenn MY_DASHBOARD_URL != "")
-
-# Pfad für Root-CA
+MY_DASHBOARD_URL="https://10.100.100.27/otrs/"
+PRTG_DASHBOARD_URL_S=60
+MY_DASHBOARD_URL_S=60
 CA_CERT_PATH="/usr/local/share/ca-certificates/tanum_root_CA.crt"
-
-# Bildschirmzeiten (Mo-Fr)
 SCREEN_ON="08:00"
 SCREEN_OFF="19:00"
-
-# =========================
-# Hilfsfunktionen
-# =========================
 
 is_positive_int() {
   [[ "$1" =~ ^[1-9][0-9]*$ ]]
 }
-
-# =========================
-# Root-Check & Validierung
-# =========================
 
 if [[ $EUID -ne 0 ]]; then
   echo "Bitte als root ausführen (z.B. mit: sudo bash setup.sh)" >&2
@@ -60,7 +39,7 @@ if [[ -n "${MY_DASHBOARD_URL}" ]] && ! is_positive_int "${MY_DASHBOARD_URL_S}"; 
 fi
 
 # =========================
-# Root-CA ins System einspielen
+# Root-CA
 # =========================
 
 tee "${CA_CERT_PATH}" >/dev/null <<'EOF'
@@ -100,16 +79,8 @@ EOF
 chmod 644 "${CA_CERT_PATH}"
 update-ca-certificates
 
-# =========================
-# Pakete installieren
-# =========================
-
 apt-get update
 apt-get install -y libnss3-tools
-
-# =========================
-# Kiosk-User anlegen
-# =========================
 
 if ! id -u "${KIOSK_USER}" >/dev/null 2>&1; then
   echo "Kiosk-Benutzer ${KIOSK_USER} existiert nicht, wird erstellt..."
@@ -118,22 +89,13 @@ else
   echo "Kiosk-Benutzer ${KIOSK_USER} existiert bereits."
 fi
 
-# Gruppenrechte für Kiosk-User
 usermod -aG audio,video,input,gpio,render "${KIOSK_USER}" || true
-
-# =========================
-# CA in NSS-Store des Kiosk-Users
-# =========================
 
 mkdir -p "/home/${KIOSK_USER}/.pki/nssdb"
 certutil -d "sql:/home/${KIOSK_USER}/.pki/nssdb" \
   -A -t "C,," -n "Tanum Root CA" \
   -i "${CA_CERT_PATH}"
 chown -R "${KIOSK_USER}:${KIOSK_USER}" "/home/${KIOSK_USER}/.pki"
-
-# =========================
-# Chromium installieren/finden
-# =========================
 
 CHROMIUM_BIN="$(command -v chromium-browser || command -v chromium || true)"
 
@@ -158,16 +120,8 @@ if [[ -z "${CHROMIUM_BIN}" ]]; then
   fi
 fi
 
-# =========================
-# Zusätzliche Tools
-# =========================
-
 apt-get update
 apt-get install -y unclutter cec-utils || true
-
-# =========================
-# Dashboard-Rotation (bei 2 URLs)
-# =========================
 
 DASHBOARD_START_URL="${PRTG_DASHBOARD_URL}"
 
@@ -226,10 +180,6 @@ EOF
   DASHBOARD_START_URL="file:///home/${KIOSK_USER}/prtg-rotator.html"
 fi
 
-# =========================
-# Autostart-Einträge für Kiosk-User
-# =========================
-
 AUTOSTART_DIR="/home/${KIOSK_USER}/.config/autostart"
 mkdir -p "${AUTOSTART_DIR}"
 chown -R "${KIOSK_USER}:${KIOSK_USER}" "/home/${KIOSK_USER}/.config"
@@ -254,10 +204,6 @@ chown "${KIOSK_USER}:${KIOSK_USER}" \
   "${AUTOSTART_DIR}/prtg-kiosk.desktop" \
   "${AUTOSTART_DIR}/unclutter.desktop"
 
-# =========================
-# Monitor-Power-Skript (CEC)
-# =========================
-
 cat > /usr/local/bin/monitor-power.sh <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
@@ -280,7 +226,6 @@ EOF
 
 chmod +x /usr/local/bin/monitor-power.sh
 
-# Cronjob für Monitor EIN/AUS
 ON_HOUR="${SCREEN_ON%:*}"
 ON_MIN="${SCREEN_ON#*:}"
 OFF_HOUR="${SCREEN_OFF%:*}"
@@ -295,17 +240,9 @@ EOF
 
 chmod 644 /etc/cron.d/tco-monitor-power
 
-# =========================
-# Kiosk-User aus sudo-Gruppe entfernen
-# =========================
-
 if getent group sudo | grep -qE "\b${KIOSK_USER}\b"; then
   deluser "${KIOSK_USER}" sudo || true
 fi
-
-# =========================
-# LightDM Autologin konfigurieren (falls vorhanden)
-# =========================
 
 if [[ -f /etc/lightdm/lightdm.conf ]]; then
   if grep -q '^autologin-user=' /etc/lightdm/lightdm.conf; then
@@ -323,19 +260,11 @@ if [[ -f /etc/lightdm/lightdm.conf ]]; then
   fi
 fi
 
-# =========================
-# Keyring des Kiosk-Users "stummschalten"
-# =========================
-
 KEYRING_DIR="/home/${KIOSK_USER}/.local/share/keyrings"
 rm -f "${KEYRING_DIR}"/* 2>/dev/null || true
 mkdir -p "${KEYRING_DIR}"
 printf "[Keyring]\ndisplay-name=Login\nlock-on-idle=false\n" > "${KEYRING_DIR}/login.keyring"
 chown -R "${KIOSK_USER}:${KIOSK_USER}" "/home/${KIOSK_USER}/.local"
-
-# =========================
-# Neustart
-# =========================
 
 echo "Setup abgeschlossen. System wird neu gestartet..."
 reboot now
