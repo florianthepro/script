@@ -1,3 +1,1 @@
-#1 fill [emty]
-
-#2 run script with sudo
+first fill [emty] then run script with sudo
