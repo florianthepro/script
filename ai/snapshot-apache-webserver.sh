@@ -1,46 +1,14 @@
 #!/usr/bin/env bash
-#Name: ai(made by ai with funktional testing)
-#1 fill [emty]
-#2 run script with sudo
 set -uo pipefail
-
-# ===========================================================
-# snapshot-webserver.sh
-#
-# 1) Erzeugt setup.sh (Snapshot deines Webservers)
-# 2) Analysiert setup.sh:
-#    - Pakete
-#    - DocumentRoots
-#    - pro User eine Rechte-Zeile (chown)
-#    - Verzeichnisse mit Dateien
-#    - interaktiver Modus:
-#         exit
-#         normal
-#         list
-#         detail <pfad>
-# ===========================================================
-
 SETUP="setup.sh"
-
-# -----------------------------------------------------------
-# Helper
-# -----------------------------------------------------------
-
 shell_quote() {
     local s="$1"
     printf "'%s'" "${s//\'/\'\"\'\"\'}"
 }
-
-# globale Strukturen für Analyse
-declare -A FILE_START FILE_END      # Pfad -> Start/End-Zeile (Base64)
-declare -A DIR_HAS_FILES            # Verzeichnis -> 1
-declare -A USER_COUNT USER_DIRS     # user -> count, dirs-list
-declare -a ALL_FILES                # Liste aller Pfade
-
-# -----------------------------------------------------------
-# SNAPSHOT-FUNKTION
-# -----------------------------------------------------------
-
+declare -A FILE_START FILE_END
+declare -A DIR_HAS_FILES
+declare -A USER_COUNT USER_DIRS
+declare -a ALL_FILES
 detect_packages() {
     local pkgs=("apache2")
     local prefixes=("apache2" "libapache2-mod" "php" "php-" "php7" "php8")
@@ -56,8 +24,6 @@ detect_packages() {
             done
         done <<< "$output"
     fi
-
-    # Duplikate entfernen
     local -A seen=()
     local final=()
     for p in "${pkgs[@]}"; do
@@ -68,7 +34,6 @@ detect_packages() {
 
     PKGS=("${final[@]}")
 }
-
 detect_docroots() {
     DOCROOTS=()
     local DIR="/etc/apache2/sites-enabled"
@@ -89,46 +54,35 @@ detect_docroots() {
             done < "$conf"
         done < <(find "$DIR" -maxdepth 1 -type f -name "*.conf" -print)
     fi
-
     if [[ "${#DOCROOTS[@]}" -eq 0 ]]; then
         DOCROOTS=("/var/www/html")
     fi
 }
-
 write_snapshot() {
     local out="$1"
     local docroots=("${DOCROOTS[@]}")
     local pkgs=("${PKGS[@]}")
-
     cat > "$out" << 'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
-
 # automatisch erzeugtes Setup-Skript
-
 if [[ $EUID -ne 0 ]]; then
   echo "Bitte als root ausführen (z.B. mit: sudo ./setup.sh)" >&2
   exit 1
 fi
-
 EOF
-
     echo "apt-get update" >> "$out"
     printf 'DEBIAN_FRONTEND=noninteractive apt-get install -y' >> "$out"
     printf ' %q' "${pkgs[@]}" >> "$out"
     echo >> "$out"
     echo >> "$out"
-
     echo "# Bekannte DocumentRoots (aus Quellmaschine):" >> "$out"
     local r
     for r in "${docroots[@]}"; do
         echo "#   - $r" >> "$out"
     done
     echo >> "$out"
-
     echo 'echo "[INFO] Verzeichnisse anlegen und Rechte setzen..."' >> "$out"
-
-    # Verzeichnisse
     declare -A DIRS=()
     local root
     for root in "${docroots[@]}"; do
@@ -140,7 +94,6 @@ EOF
             DIRS["$d"]="$st"
         done < <(find "$root" -type d -print0)
     done
-
     local d
     for d in $(printf "%s\n" "${!DIRS[@]}" | sort -V); do
         local st mode user group q
@@ -151,10 +104,8 @@ EOF
         echo "chmod $mode $q || true" >> "$out"
         echo "chown $user:$group $q || true" >> "$out"
     done
-
     echo >> "$out"
     echo 'echo "[INFO] Dateien schreiben..."' >> "$out"
-
     # Dateien
     local f
     for root in "${docroots[@]}"; do
@@ -167,7 +118,6 @@ EOF
             b64=$(base64 -w0 "$f" 2>/dev/null || echo "")
             [[ -z "$b64" ]] && continue
             qf=$(shell_quote "$f")
-
             echo "# Datei: $f" >> "$out"
             echo "base64 -d > $qf << 'EOF_B64'" >> "$out"
             echo "$b64" | fold -w76 >> "$out"
@@ -177,12 +127,10 @@ EOF
             echo >> "$out"
         done < <(find "$root" -type f -print0)
     done
-
     echo 'echo "[INFO] Setup abgeschlossen."' >> "$out"
 
     chmod +x "$out"
 }
-
 snapshot() {
     echo "🟦 Starte Snapshot des Webservers…"
     detect_packages
@@ -190,35 +138,23 @@ snapshot() {
     write_snapshot "$SETUP"
     echo "🟩 Snapshot OK – setup.sh erstellt"
 }
-
-# -----------------------------------------------------------
-# ANALYSE-FUNKTIONEN
-# -----------------------------------------------------------
-
 index_setup() {
-    # Base64-Blöcke indexieren
     while IFS= read -r line; do
         local lineno rest path start end_rel end dir
         lineno="${line%%:*}"
         rest="${line#*:}"
-
-        # Pfad aus: base64 -d > 'PFAD' << 'EOF_B64'
         path=$(printf '%s\n' "$rest" | sed -E "s/.*base64 -d > '([^']+)'.*/\1/")
         [[ -z "$path" ]] && continue
-
         start=$((lineno+1))
         end_rel=$(sed -n "${start},999999p" "$SETUP" | grep -nm1 "EOF_B64" | cut -d: -f1 || true)
         [[ -z "$end_rel" ]] && continue
         end=$((start + end_rel - 2))
-
         FILE_START["$path"]=$start
         FILE_END["$path"]=$end
         ALL_FILES+=("$path")
         dir=$(dirname "$path")
         DIR_HAS_FILES["$dir"]=1
     done < <(grep -n "base64 -d >" "$SETUP" || true)
-
-    # chown-Zeilen indexieren (User-Übersicht)
     while IFS= read -r line; do
         if [[ "$line" =~ chown[[:space:]]+([^:[:space:]]+):([^[:space:]]+)[[:space:]]+\'([^\']+)\' ]]; then
             local user group path dir current
@@ -234,7 +170,6 @@ index_setup() {
         fi
     done < "$SETUP"
 }
-
 show_normal() {
     echo
     echo "====================================================="
@@ -274,7 +209,6 @@ show_normal() {
         done
     fi
     echo
-
     echo "📂 Verzeichnisse mit Dateien:"
     if [[ ${#DIR_HAS_FILES[@]} -eq 0 ]]; then
         echo "  • (keine gefunden)"
@@ -286,7 +220,6 @@ show_normal() {
     fi
     echo
 }
-
 show_list() {
     echo
     echo "====================================================="
@@ -299,7 +232,6 @@ show_list() {
     for dir in $(printf "%s\n" "${!DIR_HAS_FILES[@]}" | sort -V || true); do
         echo "  • $dir"
     done
-
     echo
     echo "📄 Alle Dateien (aus setup.sh):"
     local f
@@ -308,27 +240,21 @@ show_list() {
     done
     echo
 }
-
 show_detail() {
     local path="$1"
     if [[ -z "${FILE_START[$path]:-}" ]]; then
         echo "❌ Pfad nicht in setup.sh gefunden: $path"
         return
     fi
-
     local start end data raw
     start="${FILE_START[$path]}"
     end="${FILE_END[$path]}"
-
     data=$(sed -n "${start},${end}p" "$SETUP" | tr -d '\n')
     raw=$(echo "$data" | base64 -d 2>/dev/null || echo "")
-
     if [[ -z "$raw" ]]; then
         echo "❌ Fehler beim Decodieren von $path"
         return
     fi
-
-    # Binär-Check (ohne -P)
     if printf '%s' "$raw" | LC_ALL=C grep -q '[^[:print:][:space:]]'; then
         local tmp="/tmp/setup_detail_$(basename "$path")"
         echo "$data" | base64 -d > "$tmp"
@@ -341,7 +267,6 @@ show_detail() {
         echo "-----------------------------"
     fi
 }
-
 interactive_loop() {
     while true; do
         echo
@@ -351,7 +276,6 @@ interactive_loop() {
         cmd="${line%% *}"
         arg="${line#* }"
         [[ "$arg" == "$cmd" ]] && arg=""
-
         case "$cmd" in
             exit)
                 echo "👋 Beende interaktiven Modus."
@@ -377,21 +301,14 @@ interactive_loop() {
         esac
     done
 }
-
-# -----------------------------------------------------------
-# MAIN
-# -----------------------------------------------------------
-
 main() {
     if [[ $EUID -ne 0 ]]; then
         echo "Bitte als root ausführen (z.B. mit: sudo ./snapshot-webserver.sh)" >&2
         exit 1
     fi
-
     snapshot
     index_setup
     show_normal
     interactive_loop
 }
-
 main "$@"
