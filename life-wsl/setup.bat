@@ -6,75 +6,73 @@ echo [FEHLER] Dieses Script muss als Administrator ausgefuehrt werden.
 pause
 exit /b 1
 )
-set DISTRO_NAME=UbuntuLive
-set INSTALL_DIR=%USERPROFILE%\wsl-live\%DISTRO_NAME%
-set ROOTFS_FILE=%~dp0ubuntu-rootfs.tar
-set ROOTFS_URL=https://partner-images.canonical.com/core/jammy/current/ubuntu-jammy-core-cloudimg-amd64-root.tar.xz
-set ROOTFS_COMPRESSED=%~dp0ubuntu-rootfs.tar.xz
-set DELETE_ROOTFS=0
 where wsl >nul 2>&1
 if errorlevel 1 (
-echo [FEHLER] WSL ist nicht installiert oder 'wsl.exe' ist nicht im Pfad.
-echo Bitte zuerst WSL installieren: wsl --install
+echo [FEHLER] WSL wurde nicht gefunden. Bitte zuerst WSL installieren, z.B.: wsl --install
 pause
 exit /b 1
 )
 where powershell >nul 2>&1
 if errorlevel 1 (
-echo [FEHLER] PowerShell wurde nicht gefunden. Dieses Script benoetigt PowerShell fuer den Download.
+echo [FEHLER] PowerShell wurde nicht gefunden. Dieses Script benoetigt PowerShell fuer den optionalen Download.
 pause
 exit /b 1
 )
-where tar >nul 2>&1
-if errorlevel 1 (
-echo [FEHLER] 'tar' wurde nicht gefunden. Unter aktuellen Windows Versionen ist tar normalerweise enthalten.
+set DISTRO_NAME=UbuntuLive
+set BASE_DIR=%ProgramData%\WSL_Live
+if "%BASE_DIR%"=="" set BASE_DIR=%SystemDrive%\WSL_Live
+if not exist "%BASE_DIR%" mkdir "%BASE_DIR%" >nul 2>&1
+set INSTALL_DIR=%BASE_DIR%\%DISTRO_NAME%
+set SCRIPT_DIR=%~dp0
+set ROOTFS_FILE=%SCRIPT_DIR%ubuntu-rootfs.tar
+if not exist "%ROOTFS_FILE%" (
+echo [INFO] Kein lokales Ubuntu-Rootfs (ubuntu-rootfs.tar) im Script-Ordner gefunden.
+if "%WSLLIVE_ROOTFS_URL%"=="" (
+echo [FEHLER] Keine Download-URL fuer das Rootfs konfiguriert.
+echo Lege ein Ubuntu-Rootfs als "ubuntu-rootfs.tar" in den Script-Ordner:
+echo %SCRIPT_DIR%
+echo Oder setze die Umgebungsvariable WSLLIVE_ROOTFS_URL mit einer gueltigen Rootfs-URL.
 pause
 exit /b 1
+)
+echo [INFO] Versuche Rootfs-Download von:
+echo %WSLLIVE_ROOTFS_URL%
+powershell -NoLogo -NoProfile -Command "try{Invoke-WebRequest -Uri '%WSLLIVE_ROOTFS_URL%' -OutFile '%ROOTFS_FILE%' -UseBasicParsing -ErrorAction Stop}catch{[Console]::Error.WriteLine('DOWNLOAD_FAILED');exit 1}"
+if errorlevel 1 (
+echo [FEHLER] Download des Rootfs ist fehlgeschlagen.
+echo Pruefe die URL in WSLLIVE_ROOTFS_URL oder lade das Rootfs manuell herunter und speichere es als:
+echo %ROOTFS_FILE%
+pause
+exit /b 1
+)
 )
 if not exist "%ROOTFS_FILE%" (
-echo [INFO] Ubuntu-Rootfs wurde nicht gefunden. Starte automatischen Download...
-echo [INFO] Lade Ubuntu LTS Rootfs von:
-echo %ROOTFS_URL%
-powershell -Command "Try {Invoke-WebRequest -Uri '%ROOTFS_URL%' -OutFile '%ROOTFS_COMPRESSED%' -UseBasicParsing -ErrorAction Stop} Catch {Write-Error $_; Exit 1}"
-if errorlevel 1 (
-echo [FEHLER] Download des Ubuntu-Rootfs ist fehlgeschlagen.
+echo [FEHLER] Rootfs-Datei wurde nicht gefunden, obwohl ein Download versucht wurde.
 pause
 exit /b 1
 )
-echo [INFO] Entpacke Rootfs-Archiv...
-tar -xf "%ROOTFS_COMPRESSED%" -C "%~dp0"
-if errorlevel 1 (
-echo [FEHLER] Entpacken des Rootfs ist fehlgeschlagen.
-pause
-exit /b 1
-)
-del /f /q "%ROOTFS_COMPRESSED%" >nul 2>&1
-for %%F in ("%~dp0*.tar") do (
-set ROOTFS_FILE=%%F
-goto :rootfsFound
-)
-:rootfsFound
-if not exist "%ROOTFS_FILE%" (
-echo [FEHLER] Konnte entpacktes Rootfs nicht finden.
-pause
-exit /b 1
-)
-)
-echo [INFO] Verwende Rootfs-Datei: %ROOTFS_FILE%
+echo [INFO] Verwende Rootfs-Datei:
+echo %ROOTFS_FILE%
 echo [INFO] Beende ggf. laufende Instanz "%DISTRO_NAME%"...
 wsl --terminate "%DISTRO_NAME%" >nul 2>&1
 echo [INFO] Entferne ggf. vorhandene Distro "%DISTRO_NAME%"...
 wsl --unregister "%DISTRO_NAME%" >nul 2>&1
-echo [INFO] Entferne alten Installationsordner "%INSTALL_DIR%"...
-if exist "%INSTALL_DIR%" (
-rmdir /s /q "%INSTALL_DIR%" 2>nul
-)
+echo [INFO] Entferne alten Installationsordner:
+echo %INSTALL_DIR%
+if exist "%INSTALL_DIR%" rmdir /s /q "%INSTALL_DIR%" 2>nul
 mkdir "%INSTALL_DIR%" >nul 2>&1
-echo [INFO] Importiere neue Live-Ubuntu-Instanz nach "%INSTALL_DIR%"...
+if not exist "%INSTALL_DIR%" (
+echo [FEHLER] Installationsordner konnte nicht angelegt werden:
+echo %INSTALL_DIR%
+pause
+exit /b 1
+)
+echo [INFO] Importiere neue Live-Ubuntu-Instanz nach:
+echo %INSTALL_DIR%
 wsl --import "%DISTRO_NAME%" "%INSTALL_DIR%" "%ROOTFS_FILE%" --version 2
 if errorlevel 1 (
 echo [FEHLER] Import der Distro ist fehlgeschlagen.
-echo Pruefe, ob das Rootfs ein gueltiges Ubuntu-LTS-Image ist.
+echo Pruefe, ob "%ROOTFS_FILE%" ein gueltiges Ubuntu-Rootfs ist.
 pause
 exit /b 1
 )
@@ -88,17 +86,10 @@ echo [INFO] Beende Distro "%DISTRO_NAME%"...
 wsl --terminate "%DISTRO_NAME%" >nul 2>&1
 echo [INFO] Deregistriere Distro "%DISTRO_NAME%"...
 wsl --unregister "%DISTRO_NAME%" >nul 2>&1
-echo [INFO] Entferne Installationsordner "%INSTALL_DIR%"...
-if exist "%INSTALL_DIR%" (
-rmdir /s /q "%INSTALL_DIR%" 2>nul
-)
-if "%DELETE_ROOTFS%"=="1" (
-if exist "%ROOTFS_FILE%" (
-echo [INFO] Entferne Rootfs-Datei "%ROOTFS_FILE%"...
-del /f /q "%ROOTFS_FILE%" >nul 2>&1
-)
-)
-echo [INFO] Live-Umgebung wurde vollstaendig entfernt. Keine Daten wurden behalten.
+echo [INFO] Entferne Installationsordner:
+echo %INSTALL_DIR%
+if exist "%INSTALL_DIR%" rmdir /s /q "%INSTALL_DIR%" 2>nul
+echo [INFO] Live-Umgebung wurde vollstaendig entfernt. Es wurden keine dauerhaften Daten behalten.
 pause
 endlocal
 exit /b 0
