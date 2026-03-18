@@ -1,5 +1,3 @@
-***
-
 # WSL Reset und Live‑WSL minimal
 
 ## 1. WSL Reset
