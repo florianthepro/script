@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+#Name: ai(made by ai with funktional testing)
 set -uo pipefail
 
 # ===========================================================
