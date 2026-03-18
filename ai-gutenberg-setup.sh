@@ -1,4 +1,5 @@
 #!/bin/bash
+#Name: ai(made by ai with funktional testing)
 START_ID=1
 MAX_FAILS=3
 FAIL_COUNT=0
