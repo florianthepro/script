@@ -3,7 +3,7 @@
 START_ID=1
 MAX_FAILS=3
 FAIL_COUNT=0
-TARGET_DIR="/homes/admfloriank/Books"
+TARGET_DIR="[emty]"
 mkdir -p "$TARGET_DIR"
 ID=$START_ID
 while true; do
