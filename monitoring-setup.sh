@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+#1 Setup Rasbery Pi
+#2 Create User "dash"
+#3 fill [emty]
+#4 run script with sudo
+
 set -euo pipefail
 #Daten [emty]
 KIOSK_USER="dash"
