@@ -1,10 +1,8 @@
-Hier ist das **minimale GitHub‑Markdown**, so schlank wie möglich („ITler‑DW minimal“), **nur das Nötigste**, **alle Befehle einzeln pro Zeile**, **einsatzfertig**, **ohne Gelaber**, direkt verwendbar.
-
 ***
 
-# 🛠️ Minimal: WSL Reset + Live‑WSL (unpersistent)
+# WSL Reset und Live‑WSL minimal
 
-## 1. WSL komplett zurücksetzen
+## 1. WSL Reset
 
     wsl --list --verbose
     wsl --unregister Ubuntu
@@ -29,7 +27,7 @@ Nach Neustart:
 
 ***
 
-## 2. Basis‑Ubuntu installieren + exportieren
+## 2. Basis‑Ubuntu installieren und exportieren
 
     wsl --install -d Ubuntu
     wsl -d Ubuntu
@@ -41,33 +39,31 @@ Nach Neustart:
 
 ***
 
-## 3. Live‑WSL `.bat` (unpersistent)
+## 3. Live‑WSL Batch
 
-### Datei: `UbuntuLive.bat`
+Dateiname: `UbuntuLive.bat`
 
-```md
-@echo off
-set "LIVE_NAME=UbuntuLive"
-set "LIVE_ROOT=C:\WSL\Live\UbuntuLive"
-set "BASE_IMAGE=C:\WSL\Base\ubuntu-base.tar"
-if not exist "%BASE_IMAGE%" goto :end
-wsl --list --quiet | findstr /b /r /c:"%LIVE_NAME%" >nul 2>&1
-if %errorlevel%==0 wsl --terminate "%LIVE_NAME%"
-wsl --list --quiet | findstr /b /r /c:"%LIVE_NAME%" >nul 2>&1
-if %errorlevel%==0 wsl --unregister "%LIVE_NAME%"
-if exist "%LIVE_ROOT%" rmdir /S /Q "%LIVE_ROOT%"
-mkdir "%LIVE_ROOT%"
-wsl --import "%LIVE_NAME%" "%LIVE_ROOT%" "%BASE_IMAGE%" --version 2
-wsl -d "%LIVE_NAME%"
-wsl --terminate "%LIVE_NAME%" 2>nul
-wsl --unregister "%LIVE_NAME%" 2>nul
-if exist "%LIVE_ROOT%" rmdir /S /Q "%LIVE_ROOT%"
-:end
-```
+    @echo off
+    set "LIVE_NAME=UbuntuLive"
+    set "LIVE_ROOT=C:\WSL\Live\UbuntuLive"
+    set "BASE_IMAGE=C:\WSL\Base\ubuntu-base.tar"
+    if not exist "%BASE_IMAGE%" goto :end
+    wsl --list --quiet | findstr /b /r /c:"%LIVE_NAME%" >nul 2>&1
+    if %errorlevel%==0 wsl --terminate "%LIVE_NAME%"
+    wsl --list --quiet | findstr /b /r /c:"%LIVE_NAME%" >nul 2>&1
+    if %errorlevel%==0 wsl --unregister "%LIVE_NAME%"
+    if exist "%LIVE_ROOT%" rmdir /S /Q "%LIVE_ROOT%"
+    mkdir "%LIVE_ROOT%"
+    wsl --import "%LIVE_NAME%" "%LIVE_ROOT%" "%BASE_IMAGE%" --version 2
+    wsl -d "%LIVE_NAME%"
+    wsl --terminate "%LIVE_NAME%" 2>nul
+    wsl --unregister "%LIVE_NAME%" 2>nul
+    if exist "%LIVE_ROOT%" rmdir /S /Q "%LIVE_ROOT%"
+    :end
 
 ***
 
-## 4. Manuelle Live-Starter-Befehle (atomar pro Zeile)
+## 4. Live‑WSL manuell (atomar)
 
     wsl --terminate UbuntuLive
     wsl --unregister UbuntuLive
@@ -81,10 +77,4 @@ if exist "%LIVE_ROOT%" rmdir /S /Q "%LIVE_ROOT%"
 
 ***
 
-Wenn du willst, erstelle ich dir **eine komplette index.html oder index.php**, die:
-
-*   Buttons anzeigt („WSL Reset“, „Live-WSL Starten“)
-*   alle Befehle automatisch ausgibt oder als Download anbietet
-*   komplett minimal gebaut ist (no CSS bloat, no JS frameworks)
-
-Soll ich dir eine **HTML‑Admin‑Konsole** dafür bauen?
+Wenn du willst, kann ich dir daraus eine README.md‑fertige Version bauen oder sie noch weiter kürzen.
