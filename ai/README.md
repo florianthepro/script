@@ -1,1 +1,1 @@
-made by ai with funktional testing
+made with the use of ai
