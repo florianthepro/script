@@ -1,5 +1,7 @@
 #!/bin/bash
 #Name: ai(made by ai with funktional testing)
+#1 fill [emty]
+#2 run script with sudo
 START_ID=1
 MAX_FAILS=3
 FAIL_COUNT=0
