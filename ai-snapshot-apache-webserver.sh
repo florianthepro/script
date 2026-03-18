@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 #Name: ai(made by ai with funktional testing)
+#1 fill [emty]
+#2 run script with sudo
 set -uo pipefail
 
 # ===========================================================
