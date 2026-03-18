@@ -72,7 +72,3 @@ Dateiname: `UbuntuLive.bat`
     wsl --terminate UbuntuLive
     wsl --unregister UbuntuLive
     rmdir /S /Q C:\WSL\Live\UbuntuLive
-
-***
-
-Wenn du willst, kann ich dir daraus eine README.md‑fertige Version bauen oder sie noch weiter kürzen.
