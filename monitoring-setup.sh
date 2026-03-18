@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
-#Daten
+#Daten [emty]
 KIOSK_USER="dash"
-url1="https://monitoring.tcsoc.net/public/mapshow.htm?ids=15901:4C3A7306-367D-40E8-8CD6-A9EC9936D655,16089:577EA9F7-7D38-45C5-A52B-159D3800C66C,14848:6AD7B66E-A56E-4694-8296-D0A24FAC3AED"
-url2="https://10.100.100.27/otrs/"
+url1="[emty]"
+url2="[emty]"
 url1_S=60
 url2_S=60
 SCREEN_ON="08:00"
