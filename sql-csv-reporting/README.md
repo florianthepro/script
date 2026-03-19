@@ -1,4 +1,4 @@
-📝 Description
+# 📝 Description
 sql-csv-reporting is a streamlined data management tool designed to bridge the gap between SQL databases and spreadsheet-based analysis. This project provides an efficient way to execute complex SQL queries and automatically transform the results into clean, portable CSV reports. Whether you are a data analyst needing quick exports or a developer automating reporting workflows, sql-csv-reporting simplifies the process of extracting actionable insights from your relational data.
 
 <table width="100%">
