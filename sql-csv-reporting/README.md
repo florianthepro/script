@@ -18,7 +18,7 @@ end
       <a href="05.md">← Zurück</a>
     </td>
     <td align="right">
-      <a href="01.md">Weiter →</a>
+      <a href="02.md">Weiter →</a>
     </td>
   </tr>
 </table>
