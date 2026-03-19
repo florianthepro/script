@@ -1,6 +1,5 @@
 > [!IMPORTANT]
->Diese Dateien wurde offensichtlich unter Zeitdruck, Koffein und fragwuerdiger 
-Motivation erstellt. Nutzen auf eigene Gefahr.
+>Diese Dateien wurde offensichtlich unter Zeitdruck, Koffein und fragwuerdiger Motivation erstellt. Nutzen auf eigene Gefahr.
 
 > [!NOTE]
 > fill [emty]
