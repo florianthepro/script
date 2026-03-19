@@ -22,3 +22,9 @@ end
     </td>
   </tr>
 </table>
+
+
+<div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+  <div><a href="README.md">← Zurück</a></div>
+  <div><a href="docs/diagram-projektstruktur.png">Weiter →</a></div>
+</div>
