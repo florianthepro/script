@@ -8,6 +8,7 @@
     </td>
   </tr>
 </table>
+
 [📥 Download als ZIP](https://github.com/florianthepro/script/archive/refs/heads/main.zip)
 
 ```mermaid
