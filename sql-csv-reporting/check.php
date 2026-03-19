@@ -1,4 +1,5 @@
 <?php
+// von extern
 // check.php
 session_start();
 
