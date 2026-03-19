@@ -1,6 +1,6 @@
 <?php
-$localFile = '/var/www/html/otrs/ticketliste.csv'; #/var/www/html/test/csv.csv
-$remoteUrl = 'http://10.104.17.42/reporting/ticketlistrecent.php'; #https://sql.com/abfragezucsv.php -> csv.csv
+$localFile = '/var/www/html/test/operationslist.csv'; #/var/www/html/test/csv.csv
+$remoteUrl = 'http://minkowski.tcsoc.net/reporting/operationticketquality.php'; #https://sql.com/abfragezucsv.php -> csv.csv
 $postField = 'downloadBtn';
 $postValue = '1';
 $timeout = 20;
