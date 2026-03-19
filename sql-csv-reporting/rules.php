@@ -122,7 +122,7 @@ o.onclick=e=>{if(!e.target.closest(".fk-menu-panel"))o.classList.remove("is-visi
 })();
 </script>
 
-<h1>Rules Editor</h1>
+<h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rules Editor</h1>
 
 <?php if($save_msg){?><div class="info"><?php echo h($save_msg);?></div><?php } ?>
 <?php if($load_error){?><div class="error"><?php echo h($load_error);?></div><?php } ?>
