@@ -1,6 +1,5 @@
 # 📝 Description
-sql-csv-reporting is a streamlined data management tool designed to bridge the gap between SQL databases and spreadsheet-based analysis.
-This project provides an efficient way to execute complex SQL queries and automatically transform the results into clean, webbased anlysed reports.
+sql-csv-reporting ist ein optimiertes Datenverwaltungstool, das entwickelt wurde, um die Lücke zwischen SQL-Datenbanken und tabellenkalkulationsbasierten Analysen zu schließen. Dieses Projekt bietet eine effiziente Möglichkeit, komplexe SQL-Abfragen auszuführen und die Ergebnisse automatisch in übersichtliche, webbasierte Analyseberichte umzuwandeln.
 
 <table width="100%">
   <tr valign="middle">
