@@ -1,17 +1,15 @@
-[emty] füllen (rules.php index.php auto-download.php)
+> [!IMPORTANT]
+> pw.txt und check.php per htaccess sperren
 
-pw.txt erstellen
+> [!NOTE]
+> [emty] füllen (rules.php index.php auto-download.php)
+> pw.txt erstellen
 
-pw.txt und check.php per htaccess sperren
-
-uplouden
-
-Beschreibbar machen:
+> [!TIP]
+> Beschreibbar machen:
 ```
 sudo usermod -aG www-data [emty] #user
 sudo chown -R [emty]:www-data [emty] #user #/var/ww/html/test/
 sudo find [emty] -type d -exec chmod 770 {} \; #/var/ww/html/test/
 sudo find [emty] -type f -exec chmod 660 {} \; #/var/ww/html/test/
 ```
-&nbsp;
-pw.txt=12345678
