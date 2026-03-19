@@ -11,8 +11,8 @@ A --> B
 B --> C
 ```
 
-    </td>
-    <td>
+ </td>
+<td>
 
 ```mermaid
 graph LR
@@ -21,6 +21,6 @@ FW2[Regeln = Bedingungen]
 FW1 --> FW2
 ```
 
-    </td>
+ </td>
   </tr>
 </table>
