@@ -15,10 +15,10 @@ end
 <table width="100%">
   <tr valign="middle">
     <td align="left">
-      <a href="05.md">← Zurück</a>
+      <a href="inf/05.md">← Zurück</a>
     </td>
     <td align="right">
-      <a href="02.md">Weiter →</a>
+      <a href="inf/02.md">Weiter →</a>
     </td>
   </tr>
 </table>
