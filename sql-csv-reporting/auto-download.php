@@ -1,7 +1,6 @@
 <?php
-// auto-download.php
-$localFile = '[emty]'; #/var/www/html/test/csv.csv
-$remoteUrl = '[emty]'; #https://sql.com/abfragezucsv.php -> csv.csv
+$localFile = '/var/www/html/otrs/ticketliste.csv'; #/var/www/html/test/csv.csv
+$remoteUrl = 'http://10.104.17.42/reporting/ticketlistrecent.php'; #https://sql.com/abfragezucsv.php -> csv.csv
 $postField = 'downloadBtn';
 $postValue = '1';
 $timeout = 20;
@@ -87,10 +86,10 @@ if (!@rename($tmp, $localFile)) {
 }
 $log = $dir . '/update_log.txt';
 //@file_put_contents($log, date('Y-m-d H:i:s') . " - Ticketliste aktualisiert\n", FILE_APPEND | LOCK_EX);
-$timestamp = strtotime('+1 hour');
+$timestamp = strtotime('+1 hour'); // aktuelle Zeit + 1 Stunde
 file_put_contents(
     $log,
     date('Y-m-d H:i:s', $timestamp) . " - Ticketliste aktualisiert\n",
     FILE_APPEND | LOCK_EX
 );
-echo '<h3>Ticketliste wurde automatisch aktualisiert.</h3>' . "\n";
+echo '<h3>CSV wurde automatisch aktualisiert.</h3>' . "\n";
