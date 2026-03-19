@@ -1,4 +1,3 @@
-struktur
 ```mermaid
 graph LR
 subgraph Projektstruktur
