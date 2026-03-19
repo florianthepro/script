@@ -1,3 +1,14 @@
+<table width="100%">
+  <tr valign="middle">
+    <td align="left">
+      <a href="inf/05.md">← Zurück</a>
+    </td>
+    <td align="right">
+      <a href="inf/02.md">Weiter →</a>
+    </td>
+  </tr>
+</table>
+
 ```mermaid
 graph LR
 subgraph Projektstruktur
@@ -11,13 +22,3 @@ subgraph Projektstruktur
     H[rules_backup]
 end
 ```
-<table width="100%">
-  <tr valign="middle">
-    <td align="left">
-      <a href="inf/05.md">← Zurück</a>
-    </td>
-    <td align="right">
-      <a href="inf/02.md">Weiter →</a>
-    </td>
-  </tr>
-</table>
