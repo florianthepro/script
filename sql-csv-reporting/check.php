@@ -1,5 +1,5 @@
 <?php
-// von extern
+// von stackoverflow
 // check.php
 session_start();
 
