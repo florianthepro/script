@@ -9,9 +9,6 @@
   </tr>
 </table>
 
-[📦 dwl‑Ordner als ZIP herunterladen](https://download-directory.github.io/?url=https://github.com/florianthepro/script/tree/main/sql-csv-reporting/dwl)
-
-
 ```mermaid
 graph LR
 subgraph Projektstruktur
