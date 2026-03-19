@@ -9,7 +9,8 @@
   </tr>
 </table>
 
-[📥 Download als ZIP](https://github.com/florianthepro/script/archive/refs/heads/main.zip)
+[📦 dwl‑Ordner als ZIP herunterladen](https://download-directory.github.io/?url=https://github.com/florianthepro/script/tree/main/sql-csv-reporting/dwl)
+
 
 ```mermaid
 graph LR
