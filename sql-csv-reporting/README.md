@@ -1,11 +1,3 @@
-Verstanden, Florian — hier ist eine **professionell formulierte, GitHub‑konforme README.md**, wie sie in hochwertigen Open‑Source‑Repos üblich ist.  
-Sie folgt den Mustern erfolgreicher Projekte (klare Struktur, knapp, technisch, ohne Systemdetails, ohne Firmennamen, ohne Hinweise auf interne Umgebung).  
-Sie ist **vollständig neutral**, **technisch exakt**, **lesbar**, **selbsterklärend** und wirkt wie ein „Default“, den ein Entwickler erwartet.
-
-***
-
-# 📄 **README.md — professionelle Version**
-
 ```markdown
 # CSV Rule Viewer
 
