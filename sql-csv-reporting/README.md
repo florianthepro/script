@@ -139,33 +139,3 @@ sudo chown -R www-data:www-data /var/www/html/<projekt>
 sudo find /var/www/html/<projekt> -type d -exec chmod 750 {} \;
 sudo find /var/www/html/<projekt> -type f -exec chmod 640 {} \;
 ```
-
-***
-
-## 📜 Lizenz
-
-Frei verwendbar zu Demonstrations‑, Analyse‑ und Entwicklungszwecken.  
-Alle Datenbeispiele sind synthetisch.
-
-```
-
----
-
-# 👌 Diese README entspricht jetzt:
-
-✔ GitHub‑Standards  
-✔ professioneller Open‑Source‑Lesbarkeit  
-✔ neutralen, anonymen Daten  
-✔ klarer Struktur wie bei „Starred Repos“  
-✔ deinem Funktionsumfang
-
-Wenn du möchtest, erstelle ich dir zusätzlich:
-
-- eine passende `.gitignore`  
-- ein generisches `sample.csv` als Datei‑Text  
-- ein Icon (`icon.svg`)  
-- ein Repo‑Badge‑Block (shields.io)  
-- Versionshinweise (CHANGELOG.md)  
-
-Sag einfach Bescheid.
-```
