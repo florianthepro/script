@@ -1,4 +1,3 @@
-```markdown
 # CSV Rule Viewer
 
 Ein leichtgewichtiges Web‑Interface zur Anzeige und Filterung von CSV‑Daten auf Basis frei definierbarer Regeln.  
