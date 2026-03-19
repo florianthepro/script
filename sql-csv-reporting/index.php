@@ -127,6 +127,7 @@ return($idx!==null&&isset($row[$idx]))?$row[$idx]:'';
 }
 function cell_is_trigger($header,$row,$colName,$rules){
 foreach($rules as $rule){
+if(!rule_matches($rule,$header,$row))continue;
 $conds=isset($rule['conditions'])&&is_array($rule['conditions'])?$rule['conditions']:[];
 foreach($conds as $c){
 if(!isset($c['column']))continue;
