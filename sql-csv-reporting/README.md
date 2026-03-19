@@ -1,4 +1,4 @@
-[emty] füllen
+[emty] füllen (rules.php index.php auto-download.php)
 
 pw.txt erstellen
 
