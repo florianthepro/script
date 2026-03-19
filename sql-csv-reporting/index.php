@@ -178,7 +178,7 @@ th{background:#f6f6f6;color:#000000}
 <script>
 (function(){"use strict";var btn=document.querySelector("[data-fk-menu-btn]");var overlay=document.querySelector("[data-fk-menu-overlay]");var closers=document.querySelectorAll("[data-fk-menu-close]");var isOpen=false;if(!btn||!overlay)return;function openMenu(){if(isOpen)return;isOpen=true;overlay.classList.add("is-visible");overlay.setAttribute("aria-hidden","false");document.documentElement.style.overflow="hidden"}function closeMenu(){if(!isOpen)return;isOpen=false;overlay.classList.remove("is-visible");overlay.setAttribute("aria-hidden","true");document.documentElement.style.overflow=""}btn.addEventListener("click",function(e){e.stopPropagation();isOpen?closeMenu():openMenu()});closers.forEach(function(el){el.addEventListener("click",closeMenu)});overlay.addEventListener("click",function(e){var panel=overlay.querySelector(".fk-menu-panel");if(panel&&!panel.contains(e.target))closeMenu()});document.addEventListener("keydown",function(e){if(e.key==="Escape")closeMenu()})})();
 </script>
-<h2>CSV-Liste</h2>
+<h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CSV-Liste</h2>
 <?php if($csvError):?><div class="error"><?php echo h($csvError);?></div><?php endif;?>
 <h3>Ergebnisse (<?php echo count($filtered);?>)</h3>
 <table>
