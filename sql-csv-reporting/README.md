@@ -4,7 +4,7 @@
       <a href="https://github.com/florianthepro/script/releases/download/Final/dwl.zip">Sourcecode</a>
     </td>
     <td align="right">
-      <a href="/README/01.md">Weiter →</a>
+      <a href="/README/01.md">Read →</a>
     </td>
   </tr>
 </table>
