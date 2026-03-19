@@ -1,7 +1,9 @@
 > [!IMPORTANT]
 >Diese Dateien wurde offensichtlich unter Zeitdruck, Koffein und fragwuerdiger 
-Motivation erstellt.
-> 
-> Nutzen auf eigene Gefahr.
+Motivation erstellt. Nutzen auf eigene Gefahr.
 
-sh: first fill [emty] then run script with sudo
+> [!NOTE]
+> fill [emty]
+
+> [!TIP]
+> run sh scripts with sudo
