@@ -192,8 +192,8 @@ DATA.rules.forEach((r,i)=>{
 let tr=document.createElement("tr");
 tr.innerHTML="<td>"+(i+1)+"</td><td>"+h(r.description||("Regel "+(i+1)))+"</td>";
 let td=document.createElement("td");
-let b1=document.createElement("button");b1.textContent="Edit";b1.className="small";b1.onclick=()=>openRule(i);
-let b2=document.createElement("button");b2.textContent="X";b2.className="small";b2.style.marginLeft="4px";b2.onclick=()=>{if(confirm("Löschen?")){DATA.rules.splice(i,1);render();}};
+let b1=document.createElement("button");b1.type="button";b1.textContent="Edit";b1.className="small";b1.onclick=()=>openRule(i);
+let b2=document.createElement("button");b2.type="button";b2.textContent="X";b2.className="small";b2.style.marginLeft="4px";b2.onclick=()=>{if(confirm("Löschen?")){DATA.rules.splice(i,1);render();}};
 td.appendChild(b1);td.appendChild(b2);
 tr.appendChild(td);tb.appendChild(tr);
 });
