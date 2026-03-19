@@ -13,3 +13,4 @@
 >sudo find [emty] -type d -exec chmod 770 {} \; #/var/ww/html/test/
 >sudo find [emty] -type f -exec chmod 660 {} \; #/var/ww/html/test/
 >```
+[Source Code dwl][https://github.com/florianthepro/script/releases/download/Final/dwl.zip)
