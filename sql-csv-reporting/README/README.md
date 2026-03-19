@@ -1,3 +1,14 @@
+<table width="100%">
+  <tr valign="middle">
+    <td align="left">
+      <a href="https://github.com/florianthepro/script/releases/download/Final/dwl.zip">Sourcecode</a>
+    </td>
+    <td align="right">
+      <a href="/README/01.md">Weiter →</a>
+    </td>
+  </tr>
+</table>
+
 > [!IMPORTANT]
 > pw.txt und check.php per htaccess sperren
 
@@ -13,4 +24,3 @@
 >sudo find [emty] -type d -exec chmod 770 {} \; #/var/ww/html/test/
 >sudo find [emty] -type f -exec chmod 660 {} \; #/var/ww/html/test/
 >```
-[Source Code dwl](https://github.com/florianthepro/script/releases/download/Final/dwl.zip)
