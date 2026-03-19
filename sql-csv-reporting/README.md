@@ -24,6 +24,7 @@ subgraph Funktionsweise
     FW6[Anzeige kann Spalten begrenzen]
 end
 ```
+Daten
 ```mermaid
 graph LR
 subgraph Muster
