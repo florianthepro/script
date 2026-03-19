@@ -15,7 +15,7 @@ end
 <table width="100%">
   <tr valign="middle">
     <td align="left">
-      <a href="#05">← Zurück</a>
+      <a href="05.md">← Zurück</a>
     </td>
     <td align="right">
       <a href="#01.md">Weiter →</a>
