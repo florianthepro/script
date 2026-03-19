@@ -1,7 +1,7 @@
 <table width="100%">
   <tr valign="middle">
     <td align="left">
-      <a href="https://github.com/florianthepro/script/releases/download/Final/dwl.zip">Sourcecode</a>
+      <a href="https://github.com/florianthepro/script/releases/download/Final/dwl.zip">Source-Code</a>
     </td>
     <td align="right">
       <a href="/README/01.md">Read →</a>
