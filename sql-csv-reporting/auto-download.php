@@ -1,6 +1,6 @@
 <?php
-$localFile = '/var/www/html/test/operationslist.csv'; # /var/www/html/test/csv.csv
-$remoteUrl = 'http://minkowski.tcsoc.net/reporting/operationticketquality.php'; #http
+$localFile = '[emty]'; # /var/www/html/test/csv.csv
+$remoteUrl = '[emty]'; #http
 $postField = 'downloadBtn';
 $postValue = '1';
 $timeout = 20;
