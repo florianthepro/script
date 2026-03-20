@@ -1,0 +1,40 @@
+.headerHomeButton {
+  display: none;
+}
+
+.headerButton.headerButtonRight.headerUserButton.paper-icon-button-light {
+  display: none;
+}
+.headerCastButton {
+  display: none;
+}
+.headerSyncButton {
+  display: none;
+}
+.material-icons.person {
+  display: none;
+}
+.material-icons.search {
+  display: none;
+}
+#castCollapsible {
+  display: none;
+}
+.backdropImage {
+  display: none;
+}
+
+.backgroundContainer {
+  background-color: rgba(0, 0, 0, 0);
+  background-image: url('https://i0.wp.com/picjumbo.com/wp-content/uploads/vibrant-colorful-ink-background-wallpaper-free-image.jpg?w=1500&quality=50');
+  filter: blur(10px);
+  background-size: cover;
+}
+.skinHeader.focuscontainer-x.skinHeader-withBackground.skinHeader-blurred {
+  background: none;
+  background-color: rgba(0, 0, 0, 0);
+}
+.skinHeader.focuscontainer-x.skinHeader-withBackground.skinHeader-blurred.noHomeButtonHeader {
+  background: none;
+  background-color: rgba(0, 0, 0, 0);
+}
