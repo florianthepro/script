@@ -124,26 +124,14 @@ backdrop-filter:blur(14px)!important;
 -webkit-backdrop-filter:blur(14px)!important;
 border:1px solid rgba(255,255,255,0.12)!important;
 }
-/* Meine Medien -> horizontale Scrollliste statt Carousel */
-.section0 .itemsContainer,
-.itemsContainer.itemsContainer-scroll {
-display:flex!important;
-flex-wrap:nowrap!important;
+/* Meine Medien: horizontales Scrollen erlauben, ohne Layout zu verändern */
+.homeSections .section0 .itemsContainer {
 overflow-x:auto!important;
 overflow-y:hidden!important;
 scroll-behavior:smooth!important;
-gap:1rem!important;
 }
 
-/* Cards fixieren (nicht zusammenquetschen) */
-.section0 .card,
-.itemsContainer.itemsContainer-scroll .card {
-flex:0 0 auto!important;
-min-width:120px!important;
-}
-
-/* Scrollbar ausblenden (iOS-Look) */
-.section0 .itemsContainer::-webkit-scrollbar,
-.itemsContainer.itemsContainer-scroll::-webkit-scrollbar{
+/* Scrollbar optisch ausblenden (iOS-Look), nur in Meine Medien */
+.homeSections .section0 .itemsContainer::-webkit-scrollbar{
 display:none!important;
 }
