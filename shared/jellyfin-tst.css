@@ -135,3 +135,11 @@ scroll-behavior:smooth!important;
 .homeSections .section0 .itemsContainer::-webkit-scrollbar{
 display:none!important;
 }
+/* LIVE TV aus "Meine Medien" entfernen */
+.homeSections .section0 .itemsContainer .card[data-id="livetv"],
+.homeSections .section0 .itemsContainer .card[data-type="livetv"],
+.homeSections .section0 .itemsContainer .libraryIcon.liveTv,
+.homeSections .section0 .itemsContainer a[href*="livetv"],
+.homeSections .section0 .itemsContainer a[href*="LiveTV"] {
+display:none!important;
+}
