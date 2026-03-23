@@ -40,4 +40,5 @@ funnel:
 ```
 
 on device:
-tail
+tailscale device
+tailscaled funnel up --bg
